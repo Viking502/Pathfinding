@@ -1,0 +1,8 @@
+
+FREE = 0
+WALL = 1
+PAWN = 2
+TARGET = 4
+PATH = 8
+QUE_PATH = 16
+DEATH_WAY = 32
