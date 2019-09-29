@@ -27,7 +27,6 @@ class Terrain:
         pos = [mouse_pos[1] // self.size, mouse_pos[0] // self.size]
         self.set_target(pos)
 
-
     def rand_target(self):
 
         rand_target = lambda interval: rand.randint(1, interval - 2)
@@ -61,6 +60,10 @@ class Terrain:
     def add_block_manually(self, mouse_pos):
         pos = [mouse_pos[1] // self.size, mouse_pos[0] // self.size]
         self.grid[pos[0]][pos[1]] = CONST.WALL
+
+    def free_block_manually(self, mouse_pos):
+        pos = [mouse_pos[1] // self.size, mouse_pos[0] // self.size]
+        self.grid[pos[0]][pos[1]] = CONST.FREE
 
     def draw(self, win):
 
