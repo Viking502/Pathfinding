@@ -31,6 +31,8 @@ def main():
                     map.add_block_manually(pg.mouse.get_pos())
                 if event.key == pg.K_e:
                     map.set_target_manually(pg.mouse.get_pos())
+                if event.key == pg.K_q:
+                    map.free_block_manually(pg.mouse.get_pos())
 
         window.fill((120, 120, 120))
         map.draw(window)
