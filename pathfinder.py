@@ -54,9 +54,6 @@ class Pathfinder:
                         cost[mv_pos[0]][mv_pos[1]] = cost[curr_pos[0]][curr_pos[1]] + 1
                         que.append(mv_pos)
 
-        print("cost map:")
-        pprint.pprint(cost)
-
         pointer = self.target
         self.path_que.append(list(pointer))
         while pointer[0] != self.pos[0] or pointer[1] != self.pos[1]:
@@ -71,8 +68,6 @@ class Pathfinder:
             self.path_que.append(list(pointer))
             if grid[pointer[0]][pointer[1]] != CONST.PAWN:
                 grid[pointer[0]][pointer[1]] = CONST.QUE_PATH
-        print("path:")
-        print(self.path_que)
         return True
 
     def a_star(self, grid, win, map):
@@ -109,7 +104,6 @@ class Pathfinder:
                 if not grid[mv_pos[0]][mv_pos[1]] & (CONST.WALL | CONST.QUE_PATH | CONST.DEATH_WAY):
                     curr_dist = self.heuristic(mv_pos, self.target)
                     if curr_dist < best_dist:
-                        print(mv_pos)
                         exist_way_flag = True
                         best_dist = curr_dist
                         best_mv = mv_pos
