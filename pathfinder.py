@@ -4,6 +4,9 @@ import random as rand
 import const as CONST
 import pygame as pg
 
+import pprint
+import time
+
 
 class Pathfinder:
     path_que = []
@@ -34,6 +37,42 @@ class Pathfinder:
                     best_mv = mv_pos
         self.path_que.append(best_mv)
         grid[best_mv[0]][best_mv[1]] = CONST.QUE_PATH
+        return True
+
+    def dijkstra(self, grid):
+
+        cost = [[100 for _ in g] for g in grid]
+        cost[self.pos[0]][self.pos[1]] = 0
+        que = [self.pos]
+
+        while len(que) > 0:
+            curr_pos = que.pop()
+            for step in {(0, -1), (0, 1), (-1, 0), (1, 0)}:
+                mv_pos = np.add(curr_pos, step)
+                if not grid[mv_pos[0]][mv_pos[1]] & (CONST.WALL | CONST.QUE_PATH | CONST.DEATH_WAY):
+                    if cost[curr_pos[0]][curr_pos[1]] + 1 < cost[mv_pos[0]][mv_pos[1]]:
+                        cost[mv_pos[0]][mv_pos[1]] = cost[curr_pos[0]][curr_pos[1]] + 1
+                        que.append(mv_pos)
+
+        print("cost map:")
+        pprint.pprint(cost)
+
+        pointer = self.target
+        self.path_que.append(list(pointer))
+        while pointer[0] != self.pos[0] or pointer[1] != self.pos[1]:
+            min_cost = 100
+            best_move = pointer
+            for step in {(0, -1), (0, 1), (-1, 0), (1, 0)}:
+                next_mv = np.add(pointer, step)
+                if cost[next_mv[0]][next_mv[1]] < min_cost:
+                    min_cost = cost[next_mv[0]][next_mv[1]]
+                    best_move = next_mv
+            pointer = best_move
+            self.path_que.append(list(pointer))
+            if grid[pointer[0]][pointer[1]] != CONST.PAWN:
+                grid[pointer[0]][pointer[1]] = CONST.QUE_PATH
+        print("path:")
+        print(self.path_que)
         return True
 
     def a_star(self, grid, win, map):
@@ -108,7 +147,8 @@ class Pathfinder:
 
         if len(self.path_que) == 0:
             if grid[self.target[0]][self.target[1]] != CONST.PAWN:
-                self.a_star(grid, win, map)
+                # self.a_star(grid, win, map)
+                self.dijkstra(grid)
             else:
                 self.find_target(grid)
         else:
@@ -117,6 +157,7 @@ class Pathfinder:
 
             grid[old_pos[0]][old_pos[1]] = CONST.PATH
             grid[self.pos[0]][self.pos[1]] = CONST.PAWN
+            time.sleep(0.1)
 
     @staticmethod
     def heuristic(start, end):
