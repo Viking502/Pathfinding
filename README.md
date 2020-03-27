@@ -2,4 +2,6 @@
 
 ## Best first pick (greedy)
 ## Dijkstra algorithm
-## A*
+## A* [work in progress]
+
+![screenshot](screenshot.png)
